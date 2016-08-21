@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head>
+	<title>3yibao</title>
+	<style type="text/css">
+		h1 {
+			font-family: 微软雅黑
+		}
+	</style>
+	<script type="text/javascript">
+	var timer;
+	var pos = 0;
+	var yiBao;
+	var numberTm;
+	var huoLi = 0;
+	var fuNengliang = -100;
+	var zhongJiang = 6;
+	
+	function initEvt() {
+		timer = setInterval("mLeft()", 10);
+		numberTm = setInterval("numChange()", 100);
+	}
+
+	function mLeft() {
+		var test;
+		test = document.getElementById("divdiv");
+		pos -= 1;
+		if (pos < -550) {
+			pos = 548;
+		}
+		test.style.left = pos + "px";
+
+	}//-537px
+
+	function numChange() {
+		yiBao = Math.ceil(Math.random() * 9);
+		huoLi += Math.ceil(Math.random() * 20 - 10.25);
+		fuNengliang += Math.ceil(Math.random() * 50 - 30.25);
+		zhongJiang *= Math.random() + 0.522;
+
+		document.getElementById("spYibao").innerHTML = yiBao;
+		document.getElementById("spHuoli").innerHTML = huoLi;
+		document.getElementById("spFunengliang").innerHTML = fuNengliang;
+		document.getElementById("spZhongjiang").innerHTML = zhongJiang;
+	}
+	</script>
+</head>
+<body>	
+	<div id="divdiv" style="text-align:center;position:relative">
+		<h1 id="hhh">恭喜<span id="spYibao">3</span>怡宝</h1>
+	</div>
+	<div>
+		<h1>今天获得的活力点数是：<span id="spHuoli">0</span></h1>
+		<h1>今天获得的负能量点数是：<span id="spFunengliang">0</span></h1>
+		<h1>今天买彩票中特等奖概率是：<span id="spZhongjiang">0</span>%</h1>
+	</div>
+	<script type="text/javascript">
+		initEvt();
+	</script>
+</body>
+</html>
