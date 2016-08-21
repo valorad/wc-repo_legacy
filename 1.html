@@ -5,7 +5,7 @@
 	<title>3yibao</title>
 	<style type="text/css">
 		h1 {
-			font-family: 微软雅黑
+			font-family: '微软雅黑'
 		}
 	</style>
 	<script type="text/javascript">
@@ -16,6 +16,11 @@
 	var huoLi = 0;
 	var fuNengliang = -100;
 	var zhongJiang = 6;
+	var huoliThreshold = [-200, -150, -100, -50, 0, 50, 100, 150, 200, 300, 400, 500, 650, 800, 1000, 1100, 1200, 1300, 1400];
+	var huoliLevelNow = 4;//-3
+
+	var fuNengliangThreshold = [-3000, -2500, -2000, -1500, -1000, -500, -250, -100, 0, 150, 1000];
+	var fnlLevelNow = 8;
 	
 	function initEvt() {
 		timer = setInterval("mLeft()", 10);
@@ -37,23 +42,70 @@
 		yiBao = Math.ceil(Math.random() * 9);
 		huoLi += Math.ceil(Math.random() * 20 - 10.25);
 		fuNengliang += Math.ceil(Math.random() * 50 - 30.25);
-		zhongJiang *= Math.random() + 0.522;
+		zhongJiang *= Math.random() + 0.523;
 
 		document.getElementById("spYibao").innerHTML = yiBao;
 		document.getElementById("spHuoli").innerHTML = huoLi;
 		document.getElementById("spFunengliang").innerHTML = fuNengliang;
 		document.getElementById("spZhongjiang").innerHTML = zhongJiang;
+
+		//huoliSection
+		if (huoLi >= huoliThreshold[huoliLevelNow + 1]) {
+			huoliLevelNow += 1;
+			//yiBao
+			stShow("恭喜" + yiBao + "怡宝，你升级了！");
+			
+		}
+
+		if (huoLi < huoliThreshold[huoliLevelNow]) {
+			huoliLevelNow -= 1;
+			stShow("哎呀！" + yiBao + "怡宝，你降级了！");
+		}
+
+		document.getElementById("spHuoliLevel").innerHTML = huoliLevelNow - 4;
+
+		//fuNengliangSection
+		if (fuNengliang >= fuNengliangThreshold[fnlLevelNow + 1]) {
+			fnlLevelNow += 1;
+			//yiBao
+			stShow(yiBao + "怡宝的正能量同学已上线！");
+			
+		}
+
+		if (fuNengliang < fuNengliangThreshold[fnlLevelNow]) {
+			fnlLevelNow -= 1;
+			stShow(yiBao + "怡宝的负能量爆炸了");
+		}
+
+		document.getElementById("spFunengliangLevel").innerHTML = fnlLevelNow - 8;
+
 	}
+
+	function stShow(levelC) {
+		document.getElementById("divStatus").style.display = "block" ;
+		var timerC = setTimeout("stHide()", 3000);
+		document.getElementById("spStatus").innerHTML = levelC;
+	}
+
+	function stHide() {
+		document.getElementById("divStatus").style.display = "none" ;
+	}
+
 	</script>
 </head>
-<body>	
+<body >	
 	<div id="divdiv" style="text-align:center;position:relative">
 		<h1 id="hhh">恭喜<span id="spYibao">3</span>怡宝</h1>
 	</div>
 	<div>
-		<h1>今天获得的活力点数是：<span id="spHuoli">0</span></h1>
+		<h1>今天获得的活力点数是：<span id="spHuoli" onpropertychange="console.log('changed')">0</span></h1>
+		<h1>当前活力等级：<span id="spHuoliLevel">0</span>级</h1>
 		<h1>今天获得的负能量点数是：<span id="spFunengliang">0</span></h1>
+		<h1>当前负能量等级：<span id="spFunengliangLevel">0</span>级</h1>
 		<h1>今天买彩票中特等奖概率是：<span id="spZhongjiang">0</span>%</h1>
+	</div>
+	<div id="divStatus" style="position: fixed;    bottom: 50px;    left: 160px;    text-align: center;    font-size: 100px;    font-family: '微软雅黑';    border: dashed black 1px; display:none;">
+		<span id="spStatus">状态</span>
 	</div>
 	<script type="text/javascript">
 		initEvt();
