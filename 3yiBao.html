@@ -18,7 +18,6 @@
 	var zhongJiang = 6;
 	var huoliThreshold = [-200, -150, -100, -50, 0, 50, 100, 150, 200, 300, 400, 500, 650, 800, 1000, 1100, 1200, 1300, 1400];
 	var huoliLevelNow = 4;//-3
-
 	var fuNengliangThreshold = [-3000, -2500, -2000, -1500, -1000, -500, -250, -100, 0, 150, 1000];
 	var fnlLevelNow = 8;
 	
@@ -26,7 +25,6 @@
 		timer = setInterval("mLeft()", 10);
 		numberTm = setInterval("numChange()", 100);
 	}
-
 	function mLeft() {
 		var test;
 		test = document.getElementById("divdiv");
@@ -35,62 +33,59 @@
 			pos = 548;
 		}
 		test.style.left = pos + "px";
-
 	}//-537px
-
 	function numChange() {
 		yiBao = Math.ceil(Math.random() * 9);
 		huoLi += Math.ceil(Math.random() * 20 - 10.25);
 		fuNengliang += Math.ceil(Math.random() * 50 - 30.25);
 		zhongJiang *= Math.random() + 0.523;
+		if (zhongJiang > 100) {
+			zhongJiang = 100;
+		}
 
 		document.getElementById("spYibao").innerHTML = yiBao;
 		document.getElementById("spHuoli").innerHTML = huoLi;
 		document.getElementById("spFunengliang").innerHTML = fuNengliang;
 		document.getElementById("spZhongjiang").innerHTML = zhongJiang;
-
 		//huoliSection
 		if (huoLi >= huoliThreshold[huoliLevelNow + 1]) {
 			huoliLevelNow += 1;
 			//yiBao
-			stShow("恭喜" + yiBao + "怡宝，你升级了！");
-			
+			appInfo("恭喜" + yiBao + "怡宝升级了！");
 		}
 
 		if (huoLi < huoliThreshold[huoliLevelNow]) {
 			huoliLevelNow -= 1;
-			stShow("哎呀！" + yiBao + "怡宝，你降级了！");
+			appInfo("哎呀！" + yiBao + "怡宝降级了！");
 		}
-
 		document.getElementById("spHuoliLevel").innerHTML = huoliLevelNow - 4;
-
 		//fuNengliangSection
 		if (fuNengliang >= fuNengliangThreshold[fnlLevelNow + 1]) {
 			fnlLevelNow += 1;
 			//yiBao
-			stShow(yiBao + "怡宝的正能量同学已上线！");
-			
+			appInfo(yiBao + "怡宝的正能量同学已上线！");
 		}
-
 		if (fuNengliang < fuNengliangThreshold[fnlLevelNow]) {
 			fnlLevelNow -= 1;
-			stShow(yiBao + "怡宝的负能量爆炸了");
+			appInfo(yiBao + "怡宝的负能量爆炸了");
 		}
-
 		document.getElementById("spFunengliangLevel").innerHTML = fnlLevelNow - 8;
-
 	}
-
 	function stShow(levelC) {
 		document.getElementById("divStatus").style.display = "block" ;
 		var timerC = setTimeout("stHide()", 3000);
 		document.getElementById("spStatus").innerHTML = levelC;
 	}
-
 	function stHide() {
 		document.getElementById("divStatus").style.display = "none" ;
 	}
 
+	function appInfo(info) {
+		stShow(info);
+		var newli = document.createElement("li");
+		newli.innerHTML = info;
+		document.getElementById("ulInfoRec").appendChild(newli);
+	}
 	</script>
 </head>
 <body >	
@@ -104,7 +99,12 @@
 		<h1>当前负能量等级：<span id="spFunengliangLevel">0</span>级</h1>
 		<h1>今天买彩票中特等奖概率是：<span id="spZhongjiang">0</span>%</h1>
 	</div>
-	<div id="divStatus" style="position: fixed;    bottom: 50px;    left: 160px;    text-align: center;    font-size: 100px;    font-family: '微软雅黑';    border: dashed black 1px; display:none;">
+	<div id="divInfoRec" style="position:fixed;right:30px;top:40px;width:300px;height:300px;overflow-x: auto; overflow-y: auto;">
+		<ul id="ulInfoRec">
+			
+		</ul>
+	</div>
+	<div id="divStatus" style="position: fixed;    bottom: 50px;    left: 160px;    text-align: center;    font-size: 60px;    font-family: '微软雅黑';    border: dashed black 1px; display:none;">
 		<span id="spStatus">状态</span>
 	</div>
 	<script type="text/javascript">
