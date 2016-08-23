@@ -20,6 +20,7 @@
 	var huoliLevelNow = 4;//-3
 	var fuNengliangThreshold = [-10000, -8000, -6000, -5000, -4000, -3000, -2500, -2000, -1500, -1000, -500, -250, -100, 0, 150, 1000];
 	var fnlLevelNow = 13;
+	var msgNum = 1;
 	
 	function initEvt() {
 		timer = setInterval("mLeft()", 10);
@@ -47,9 +48,12 @@
 		document.getElementById("spFunengliang").innerHTML = fuNengliang;
 
 		if (zhongJiang < 0.00001) {
-			document.getElementById("spZhongjiang").innerHTML = "别买彩票了你没戏了！还不如资助下" + yiBao + "怡宝的儿！";
+			document.getElementById("spZhongjiang").innerHTML = "你没戏了！还不如资助下" + yiBao + "怡宝的儿！";
 		}
 		else {
+			if (zhongJiang > 95) {
+				appInfo(yiBao + "怡宝运气爆棚了", "big");
+			}
 			document.getElementById("spZhongjiang").innerHTML = zhongJiang;
 		}
 		//huoliSection
@@ -57,13 +61,13 @@
 			huoliLevelNow += 1;
 			updateHLNextLvl(huoliLevelNow);
 			//yiBao
-			appInfo("恭喜" + yiBao + "怡宝升级了！");
+			appInfo("恭喜" + yiBao + "怡宝升级了！", "default");
 		}
 
 		if (huoLi < huoliThreshold[huoliLevelNow]) {
 			huoliLevelNow -= 1;
 			updateHLNextLvl(huoliLevelNow);
-			appInfo("哎呀！" + yiBao + "怡宝降级了！");
+			appInfo("哎呀！" + yiBao + "怡宝降级了！", "big");
 		}
 		document.getElementById("spHuoliLevel").innerHTML = huoliLevelNow - 4;
 		//fuNengliangSection
@@ -71,29 +75,47 @@
 			fnlLevelNow += 1;
 			updateFNLNxtLvl(fnlLevelNow)
 			//yiBao
-			appInfo(yiBao + "怡宝的正能量已上线！");
+			appInfo(yiBao + "怡宝的正能量已上线！", "default");
 		}
 		if (fuNengliang < fuNengliangThreshold[fnlLevelNow]) {
 			fnlLevelNow -= 1;
 			updateFNLNxtLvl(fnlLevelNow);		
-			appInfo(yiBao + "怡宝的负能量爆炸了");
+			appInfo(yiBao + "怡宝的负能量爆炸了", "big");
 		}
 		document.getElementById("spFunengliangLevel").innerHTML = fnlLevelNow - 13;
 	}
-	function stShow(levelC) {
+	function stShow(levelC, isEph=false) {
 		document.getElementById("divStatus").style.display = "block" ;
+		if (!isEph) {
+			document.getElementById("divStatus").style.color = "initial" ;
+		}
+		else {
+			document.getElementById("divStatus").style.color = "red" ;
+		}
 		var timerC = setTimeout("stHide()", 3000);
 		document.getElementById("spStatus").innerHTML = levelC;
+		//Return to normal		
 	}
 	function stHide() {
 		document.getElementById("divStatus").style.display = "none" ;
 	}
 
-	function appInfo(info) {
-		stShow(info);
+	function appInfo(info, style) {	
 		var newli = document.createElement("li");
-		newli.innerHTML = info;
-		document.getElementById("ulInfoRec").appendChild(newli);
+		if (style == "big") {
+			newli.style.fontsize = "30px";
+			newli.style.color = "red";
+			stShow(info, true);
+		}
+		if (style == "default") {
+			stShow(info);
+		}
+		newli.innerHTML = "第"+ msgNum + "条：" + info;
+		msgNum++;
+		var infoDiv = document.getElementById("ulInfoRec");
+		infoDiv.appendChild(newli);
+		infoDiv.scrollTop = 9999999;
+		// infoDiv.scrollTo(0,infoDiv.scrollHeight);
 	}
 
 	function updateHLNextLvl(huoliLevelNow) {
@@ -126,7 +148,7 @@
 		<h1>当前负能量等级：<span id="spFunengliangLevel">0</span>级</h1>
 		<h1>今天买彩票中特等奖概率是：<span id="spZhongjiang">0</span>%</h1>
 	</div>
-	<div id="divInfoRec" style="position:fixed;right:30px;top:40px;width:300px;height:300px;overflow-x: auto; overflow-y: auto;">
+	<div id="divInfoRec" style="position:fixed;right:30px;top:40px;width:400px;height:300px;overflow-x: auto; overflow-y: scroll;">
 		<ul id="ulInfoRec">
 			
 		</ul>
